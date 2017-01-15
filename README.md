@@ -1,4 +1,4 @@
-## tig-open-links-in-commit-message
+# tig-open-links-in-commit-message
 
 [tig](https://github.com/jonas/tig) is a great interface for reading git commits,
 but too often there are GitHub issues or URLs mentioned in a commit message that
@@ -21,6 +21,6 @@ bind generic   x   @/PATH/TO/tig-open-links-in-commit-message/open-links-in-comm
 
 ## Usage
 
-Move to whichever commit you're interested in and press the `x` key (or whatever was set the tig config).
+Move to whichever commit you're interested in and press the `x` key (or whichever key was set in the tig config).
 
-If it doesn't seem to be working, replace `@` with `!` in the tig config to see error messages from the script.
+If it doesn't seem to be working, replace `@` with `!` in the tig config to see output from the script.
