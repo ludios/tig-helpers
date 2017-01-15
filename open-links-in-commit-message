@@ -64,7 +64,6 @@ def main():
 			url = b"https://github.com/%s/%s/issues/%d" % (user, repo, url_or_issue)
 		else:
 			url = url_or_issue
-		print(url)
 		subprocess.call([b"xdg-open", url])
 
 if __name__ == "__main__":
