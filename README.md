@@ -2,10 +2,11 @@
 
 [![Build status][travis-image]][travis-url]
 
-[tig](https://github.com/jonas/tig) is a great interface for reading git commits,
-but too often there are GitHub issues or URLs mentioned in a commit message that
-are tedious to open in a browser.  `tig-open-links-in-commit-message` provides
-an easy way to open all GitHub issues and URLs mentioned in a commit.
+[tig](https://github.com/jonas/tig) is a great interface for reading git commits, but too often
+there are [GitHub issues or URLs mentioned in a commit message](http://i.imgur.com/69V9KwQ.png)
+that are tedious to open in a browser.  The `open-links-in-commit-message` script here takes a
+commit ID and opens in your browser all of the GitHub issues and URLs mentioned in that commit.
+This is easy to integrate with tig, which can bind a key to run an executable.
 
 
 ## Installation
