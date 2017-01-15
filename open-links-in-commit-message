@@ -59,7 +59,7 @@ def main():
 	message    = subprocess.check_output([b"git", b"log", b"--format=%B", b"-n", b"1", commit])
 	user, repo = get_user_and_repo(get_origin_url())
 	for url_or_issue in get_urls_and_issue_numbers(message):
-		if not isinstance(url_or_issue, str):
+		if not isinstance(url_or_issue, (str, bytes)):
 			url = b"https://github.com/%s/%s/issues/%d" % (user, repo, url_or_issue)
 		else:
 			url = url_or_issue
