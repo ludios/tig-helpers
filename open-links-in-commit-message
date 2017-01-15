@@ -7,44 +7,44 @@ import sys
 import subprocess
 
 def get_user_and_repo(origin_url):
-	if origin_url.startswith("https://github.com/"):
-		_, _, _, user, repo = origin_url.split("/")
-	elif origin_url.startswith("git@github.com:"):
-		_, user_repo = origin_url.split(":", 1)
-		user, repo   = user_repo.split("/", 1)
+	if origin_url.startswith(b"https://github.com/"):
+		_, _, _, user, repo = origin_url.split(b"/")
+	elif origin_url.startswith(b"git@github.com:"):
+		_, user_repo = origin_url.split(b":", 1)
+		user, repo   = user_repo.split(b"/", 1)
 	else:
 		raise ValueError("remote.origin.url did not start with https://github.com/ or git@github.com:")
-	if repo.endswith(".git"):
+	if repo.endswith(b".git"):
 		repo = repo[:-4]
 	return user, repo
 
-assert get_user_and_repo("https://github.com/user/repo")     == ("user", "repo")
-assert get_user_and_repo("https://github.com/user/repo.git") == ("user", "repo")
-assert get_user_and_repo("git@github.com:user/repo")         == ("user", "repo")
-assert get_user_and_repo("git@github.com:user/repo.git")     == ("user", "repo")
+assert get_user_and_repo(b"https://github.com/user/repo")     == (b"user", b"repo")
+assert get_user_and_repo(b"https://github.com/user/repo.git") == (b"user", b"repo")
+assert get_user_and_repo(b"git@github.com:user/repo")         == (b"user", b"repo")
+assert get_user_and_repo(b"git@github.com:user/repo.git")     == (b"user", b"repo")
 
 # https://help.github.com/articles/autolinked-references-and-urls/#issues-and-pull-requests
-URL_OR_ISSUE_NUMBER_RE = re.compile(r"\b(https?://[^\s\)\]\>]+)|(?:#|GH-)(\d+)\b")
+URL_OR_ISSUE_NUMBER_RE = re.compile(rb"\b(https?://[^\s\)\]\>]+)|(?:#|GH-)(\d+)\b")
 
 def match_to_url_or_issue_number(match):
 	# match is either ('', issue) or (url, '')
-	if match[0] == "":
+	if match[0] == b"":
 		return int(match[1])
-	elif match[1] == "":
+	elif match[1] == b"":
 		return match[0]
 
 def get_urls_and_issue_numbers(message):
-	return map(match_to_url_or_issue_number, re.findall(URL_OR_ISSUE_NUMBER_RE, message))
+	return list(map(match_to_url_or_issue_number, re.findall(URL_OR_ISSUE_NUMBER_RE, message)))
 
-assert get_urls_and_issue_numbers("#1")                                == [1]
-assert get_urls_and_issue_numbers("#1 #2000")                          == [1, 2000]
-assert get_urls_and_issue_numbers("Fixes#1 #2000)")                    == [1, 2000]
-assert get_urls_and_issue_numbers("Fixes#1 #2000W")                    == [1]
-assert get_urls_and_issue_numbers("Fixes#1 GH-2000")                   == [1, 2000]
-assert get_urls_and_issue_numbers("Fixes#1 GH-2000 https://test/path") == [1, 2000, "https://test/path"]
-assert get_urls_and_issue_numbers("Fixes#1 GH-2000 http://test/path)") == [1, 2000, "http://test/path"]
-assert get_urls_and_issue_numbers("Fixes#1 GH-2000 http://test/path]") == [1, 2000, "http://test/path"]
-assert get_urls_and_issue_numbers("Fixes#1 GH-2000 http://test/path>") == [1, 2000, "http://test/path"]
+assert get_urls_and_issue_numbers(b"#1")                                == [1]
+assert get_urls_and_issue_numbers(b"#1 #2000")                          == [1, 2000]
+assert get_urls_and_issue_numbers(b"Fixes#1 #2000)")                    == [1, 2000]
+assert get_urls_and_issue_numbers(b"Fixes#1 #2000W")                    == [1]
+assert get_urls_and_issue_numbers(b"Fixes#1 GH-2000")                   == [1, 2000]
+assert get_urls_and_issue_numbers(b"Fixes#1 GH-2000 https://test/path") == [1, 2000, b"https://test/path"]
+assert get_urls_and_issue_numbers(b"Fixes#1 GH-2000 http://test/path)") == [1, 2000, b"http://test/path"]
+assert get_urls_and_issue_numbers(b"Fixes#1 GH-2000 http://test/path]") == [1, 2000, b"http://test/path"]
+assert get_urls_and_issue_numbers(b"Fixes#1 GH-2000 http://test/path>") == [1, 2000, b"http://test/path"]
 
 def get_origin_url():
 	"""
@@ -52,20 +52,20 @@ def get_origin_url():
 	"""
 	# Why not git ls-remote?  Because it won't work in a detached HEAD state.
 	# See https://goo.gl/yc3QOe
-	out = subprocess.check_output(["git", "config", "--get", "remote.origin.url"]).rstrip()
+	out = subprocess.check_output([b"git", b"config", b"--get", b"remote.origin.url"]).rstrip()
 	return out
 
 def main():
 	commit     = sys.argv[1]
-	message    = subprocess.check_output(["git", "log", "--format=%B", "-n", "1", commit])
+	message    = subprocess.check_output([b"git", b"log", b"--format=%B", b"-n", b"1", commit])
 	user, repo = get_user_and_repo(get_origin_url())
 	for url_or_issue in get_urls_and_issue_numbers(message):
 		if not isinstance(url_or_issue, str):
-			url = "https://github.com/%s/%s/issues/%d" % (user, repo, url_or_issue)
+			url = b"https://github.com/%s/%s/issues/%d" % (user, repo, url_or_issue)
 		else:
 			url = url_or_issue
 		print(url)
-		subprocess.call(["xdg-open", url])
+		subprocess.call([b"xdg-open", url])
 
 if __name__ == "__main__":
 	main()
