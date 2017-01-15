@@ -57,7 +57,7 @@ def get_origin_url():
 
 def main():
 	commit     = sys.argv[1]
-	message    = subprocess.check_output(["git", "show", "--format=%B", commit])
+	message    = subprocess.check_output(["git", "log", "--format=%B", "-n", "1", commit])
 	user, repo = get_user_and_repo(get_origin_url())
 	for url_or_issue in get_urls_and_issue_numbers(message):
 		if not isinstance(url_or_issue, str):
