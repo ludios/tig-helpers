@@ -24,7 +24,7 @@ assert get_user_and_repo(b"git@github.com:user/repo")         == (b"user", b"rep
 assert get_user_and_repo(b"git@github.com:user/repo.git")     == (b"user", b"repo")
 
 # https://help.github.com/articles/autolinked-references-and-urls/#issues-and-pull-requests
-URL_OR_ISSUE_NUMBER_RE = re.compile(rb"\b(https?://[^\s\)\]\>]+)|(?:#|GH-)(\d+)\b")
+URL_OR_ISSUE_NUMBER_RE = re.compile(br"\b(https?://[^\s\)\]\>]+)|(?:#|GH-)(\d+)\b")
 
 def match_to_url_or_issue_number(match):
 	# match is either ('', issue) or (url, '')
