@@ -52,8 +52,7 @@ def get_origin_url():
 	"""
 	# Why not git ls-remote?  Because it won't work in a detached HEAD state.
 	# See https://goo.gl/yc3QOe
-	out = subprocess.check_output([b"git", b"config", b"--get", b"remote.origin.url"]).rstrip()
-	return out
+	return subprocess.check_output([b"git", b"config", b"--get", b"remote.origin.url"]).rstrip()
 
 def main():
 	commit     = sys.argv[1]
