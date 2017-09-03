@@ -11,7 +11,7 @@ def main():
 	commit     = sys.argv[1]
 	origin_url = get_origin_url()
 	site       = get_site(origin_url)
-	if site == "github":
+	if site == "github.com":
 		user, repo = get_github_user_and_repo(origin_url)
 		url        = b"https://github.com/%s/%s/commit/%s" % (user, repo, commit)
 	elif site == "kernel.ubuntu.com":
