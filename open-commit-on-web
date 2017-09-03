@@ -1,0 +1,17 @@
+#!/usr/bin/python
+
+from __future__ import print_function
+
+import sys
+import subprocess
+
+from util import get_user_and_repo, get_origin_url
+
+def main():
+	commit     = sys.argv[1]
+	user, repo = get_user_and_repo(get_origin_url())
+	url        = b"https://github.com/%s/%s/commit/%s" % (user, repo, commit)
+	subprocess.call([b"xdg-open", url])
+
+if __name__ == "__main__":
+	main()
