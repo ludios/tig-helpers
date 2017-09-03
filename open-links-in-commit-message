@@ -6,7 +6,7 @@ import re
 import sys
 import subprocess
 
-from util import get_user_and_repo, get_origin_url
+from util import get_github_user_and_repo, get_origin_url
 
 # https://help.github.com/articles/autolinked-references-and-urls/#issues-and-pull-requests
 URL_OR_ISSUE_NUMBER_RE = re.compile(br"\b(https?://[^\s\)\]\>]+)|(?:#|GH-)(\d+)\b")
@@ -34,7 +34,7 @@ assert get_urls_and_issue_numbers(b"Fixes#1 GH-2000 http://test/path>") == [1, 2
 def main():
 	commit     = sys.argv[1]
 	message    = subprocess.check_output([b"git", b"log", b"--format=%B", b"-n", b"1", commit])
-	user, repo = get_user_and_repo(get_origin_url())
+	user, repo = get_github_user_and_repo(get_origin_url())
 	for url_or_issue in get_urls_and_issue_numbers(message):
 		if not isinstance(url_or_issue, (str, bytes)):
 			url = b"https://github.com/%s/%s/issues/%d" % (user, repo, url_or_issue)

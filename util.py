@@ -1,6 +1,14 @@
 import subprocess
 
-def get_user_and_repo(origin_url):
+def get_site(origin_url):
+	if origin_url.startswith(b"https://github.com/"):
+		return "github.com"
+	elif origin_url.startswith(b"git@github.com:"):
+		return "github.com"
+	elif origin_url.startswith(b"git://kernel.ubuntu.com/"):
+		return "kernel.ubuntu.com"
+
+def get_github_user_and_repo(origin_url):
 	if origin_url.startswith(b"https://github.com/"):
 		_, _, _, user, repo = origin_url.split(b"/")
 	elif origin_url.startswith(b"git@github.com:"):
@@ -12,10 +20,10 @@ def get_user_and_repo(origin_url):
 		repo = repo[:-4]
 	return user, repo
 
-assert get_user_and_repo(b"https://github.com/user/repo")     == (b"user", b"repo")
-assert get_user_and_repo(b"https://github.com/user/repo.git") == (b"user", b"repo")
-assert get_user_and_repo(b"git@github.com:user/repo")         == (b"user", b"repo")
-assert get_user_and_repo(b"git@github.com:user/repo.git")     == (b"user", b"repo")
+assert get_github_user_and_repo(b"https://github.com/user/repo")     == (b"user", b"repo")
+assert get_github_user_and_repo(b"https://github.com/user/repo.git") == (b"user", b"repo")
+assert get_github_user_and_repo(b"git@github.com:user/repo")         == (b"user", b"repo")
+assert get_github_user_and_repo(b"git@github.com:user/repo.git")     == (b"user", b"repo")
 
 def get_origin_url():
 	"""
