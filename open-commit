@@ -15,8 +15,11 @@ def main():
 		user, repo = get_github_user_and_repo(origin_url)
 		url        = b"https://github.com/%s/%s/commit/%s" % (user, repo, commit)
 	elif site == "kernel.ubuntu.com":
-		repo_path  = origin_url.replace("git://kernel.ubuntu.com/", "", 1)
+		repo_path  = origin_url.replace(b"git://kernel.ubuntu.com/", b"", 1)
 		url        = b"http://kernel.ubuntu.com/git/%s/commit/?id=%s" % (repo_path, commit)
+	elif site == "anonscm.debian.org":
+		repo_path  = origin_url.replace(b"https://anonscm.debian.org/git/", b"", 1)
+		url        = b"https://anonscm.debian.org/git/%s/commit/?id=%s" % (repo_path, commit)
 
 	subprocess.call([b"xdg-open", url])
 
