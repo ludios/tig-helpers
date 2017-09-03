@@ -8,5 +8,6 @@ python:
   - 3.6
 
 script:
-  - ./open-links-in-commit-message HEAD
-  - ./open-commit HEAD
+  - mkdir bin && ln -s /usr/bin/curl bin/xdg-open
+  - PATH=$PWD/bin:$PATH ./open-links-in-commit-message HEAD
+  - PATH=$PWD/bin:$PATH ./open-commit HEAD
