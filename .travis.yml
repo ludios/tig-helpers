@@ -9,3 +9,4 @@ python:
 
 script:
   - ./open-links-in-commit-message HEAD
+  - ./open-commit HEAD
