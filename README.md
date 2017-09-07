@@ -27,8 +27,8 @@ git clone https://github.com/ludios/tig-helpers
 Add to `~/.config/tig/config` or `~/.tigrc`:
 
 ```
-bind generic   x   @/PATH/TO/tig-helpers/open-links-in-commit-message %(commit)
-bind generic   x   @/PATH/TO/tig-helpers/open-commit                  %(commit)
+bind generic x @/PATH/TO/tig-helpers/open-links-in-commit-message %(commit)
+bind generic X @/PATH/TO/tig-helpers/open-commit                  %(commit)
 ```
 
 
