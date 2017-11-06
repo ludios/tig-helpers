@@ -9,6 +9,8 @@ def get_site(origin_url):
 		return "kernel.ubuntu.com"
 	elif origin_url.startswith(b"https://anonscm.debian.org/git/"):
 		return "anonscm.debian.org"
+	elif origin_url.startswith(b"https://chromium.googlesource.com/"):
+		return "chromium.googlesource.com"
 
 def get_github_user_and_repo(origin_url):
 	if origin_url.startswith(b"https://github.com/"):

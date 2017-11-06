@@ -20,6 +20,9 @@ def main():
 	elif site == "anonscm.debian.org":
 		repo_path  = origin_url.replace(b"https://anonscm.debian.org/git/", b"", 1)
 		url        = b"https://anonscm.debian.org/git/%s/commit/?id=%s" % (repo_path, commit)
+	elif site == "chromium.googlesource.com":
+		repo_path  = origin_url.replace(b"https://chromium.googlesource.com/", b"", 1).rstrip(b"/")
+		url        = b"https://chromium.googlesource.com/%s/+/%s" % (repo_path, commit)
 
 	subprocess.call([b"xdg-open", url])
 
