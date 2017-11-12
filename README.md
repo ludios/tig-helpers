@@ -10,7 +10,8 @@ a key to run an executable):
 [tig](https://github.com/jonas/tig) is a great interface for reading git commits, but too often
 there are [GitHub issues or URLs mentioned in a commit message](http://i.imgur.com/69V9KwQ.png)
 that are tedious to open in a browser.  The `open-links-in-commit-message` script here takes a
-commit ID and opens in your browser all of the GitHub issues and URLs mentioned in that commit.
+commit ID and opens in your browser all of the GitHub issues, Debian bugs, and URLs mentioned
+in that commit.
 
 ## open-commit
 
