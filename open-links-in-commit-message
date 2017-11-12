@@ -44,6 +44,13 @@ def main():
 			else:
 				url = url_or_issue
 			subprocess.call([b"xdg-open", url])
+	elif site == "anonscm.debian.org":
+		for url_or_issue in get_urls_and_issue_numbers(message):
+			if not isinstance(url_or_issue, (str, bytes)):
+				url = b"https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=%d" % (url_or_issue,)
+			else:
+				url = url_or_issue
+			subprocess.call([b"xdg-open", url])
 	else:
 		for url_or_issue in get_urls_and_issue_numbers(message):
 			# Ignore issue numbers for non-github.com repos
