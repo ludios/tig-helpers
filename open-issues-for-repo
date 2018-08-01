@@ -1,0 +1,23 @@
+#!/usr/bin/python -SB
+
+from __future__ import print_function
+
+import sys
+import subprocess
+
+from util import get_site, get_github_user_and_repo, get_origin_url
+
+def main():
+	origin_url = get_origin_url()
+	site       = get_site(origin_url)
+	if site == "github.com":
+		user, repo = get_github_user_and_repo(origin_url)
+		url        = b"https://github.com/%s/%s/issues?utf8=%%E2%%9C%%93&q=" % (user, repo)
+	elif site == "chromium.googlesource.com":
+		project    = origin_url.replace(b"https://chromium.googlesource.com/", b"", 1).split(b"/")[0]
+		url        = b"https://bugs.chromium.org/p/%s/issues/list?q=" % (project)
+
+	subprocess.call([b"xdg-open", url])
+
+if __name__ == "__main__":
+	main()
