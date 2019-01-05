@@ -1,6 +1,4 @@
-#!/usr/bin/python -SB
-
-from __future__ import print_function
+#!/usr/bin/env python3
 
 import re
 import sys
@@ -9,54 +7,54 @@ import subprocess
 from util import get_site, get_github_user_and_repo, get_origin_url
 
 # https://help.github.com/articles/autolinked-references-and-urls/#issues-and-pull-requests
-URL_OR_ISSUE_NUMBER_RE = re.compile(br"\b(https?://[^\s\)\]\>]+)|(?:#|GH-)(\d+)\b")
+URL_OR_ISSUE_NUMBER_RE = re.compile(r"\b(https?://[^\s\)\]\>]+)|(?:#|GH-)(\d+)\b")
 
 def match_to_url_or_issue_number(match):
 	# match is either ('', issue) or (url, '')
-	if match[0] == b"":
+	if match[0] == "":
 		return int(match[1])
-	elif match[1] == b"":
+	elif match[1] == "":
 		return match[0]
 
 def get_urls_and_issue_numbers(message):
 	return list(map(match_to_url_or_issue_number, re.findall(URL_OR_ISSUE_NUMBER_RE, message)))
 
-assert get_urls_and_issue_numbers(b"#1")                                == [1]
-assert get_urls_and_issue_numbers(b"#1 #2000")                          == [1, 2000]
-assert get_urls_and_issue_numbers(b"Fixes#1 #2000)")                    == [1, 2000]
-assert get_urls_and_issue_numbers(b"Fixes#1 #2000W")                    == [1]
-assert get_urls_and_issue_numbers(b"Fixes#1 GH-2000")                   == [1, 2000]
-assert get_urls_and_issue_numbers(b"Fixes#1 GH-2000 https://test/path") == [1, 2000, b"https://test/path"]
-assert get_urls_and_issue_numbers(b"Fixes#1 GH-2000 http://test/path)") == [1, 2000, b"http://test/path"]
-assert get_urls_and_issue_numbers(b"Fixes#1 GH-2000 http://test/path]") == [1, 2000, b"http://test/path"]
-assert get_urls_and_issue_numbers(b"Fixes#1 GH-2000 http://test/path>") == [1, 2000, b"http://test/path"]
+assert get_urls_and_issue_numbers("#1")                                == [1]
+assert get_urls_and_issue_numbers("#1 #2000")                          == [1, 2000]
+assert get_urls_and_issue_numbers("Fixes#1 #2000)")                    == [1, 2000]
+assert get_urls_and_issue_numbers("Fixes#1 #2000W")                    == [1]
+assert get_urls_and_issue_numbers("Fixes#1 GH-2000")                   == [1, 2000]
+assert get_urls_and_issue_numbers("Fixes#1 GH-2000 https://test/path") == [1, 2000, "https://test/path"]
+assert get_urls_and_issue_numbers("Fixes#1 GH-2000 http://test/path)") == [1, 2000, "http://test/path"]
+assert get_urls_and_issue_numbers("Fixes#1 GH-2000 http://test/path]") == [1, 2000, "http://test/path"]
+assert get_urls_and_issue_numbers("Fixes#1 GH-2000 http://test/path>") == [1, 2000, "http://test/path"]
 
 def main():
 	commit     = sys.argv[1]
-	message    = subprocess.check_output([b"git", b"log", b"--format=%B", b"-n", b"1", commit])
+	message    = subprocess.check_output(["git", "log", "--format=%B", "-n", "1", commit]).decode("utf-8")
 	origin_url = get_origin_url()
 	site       = get_site(origin_url)
 	if site == "github.com":
 		user, repo = get_github_user_and_repo(origin_url)
 		for url_or_issue in get_urls_and_issue_numbers(message):
 			if not isinstance(url_or_issue, (str, bytes)):
-				url = b"https://github.com/%s/%s/issues/%d" % (user, repo, url_or_issue)
+				url = "https://github.com/%s/%s/issues/%d" % (user, repo, url_or_issue)
 			else:
 				url = url_or_issue
-			subprocess.call([b"xdg-open", url])
+			subprocess.call(["xdg-open", url])
 	elif site == "anonscm.debian.org":
 		for url_or_issue in get_urls_and_issue_numbers(message):
 			if not isinstance(url_or_issue, (str, bytes)):
-				url = b"https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=%d" % (url_or_issue,)
+				url = "https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=%d" % (url_or_issue,)
 			else:
 				url = url_or_issue
-			subprocess.call([b"xdg-open", url])
+			subprocess.call(["xdg-open", url])
 	else:
 		for url_or_issue in get_urls_and_issue_numbers(message):
 			# Ignore issue numbers for non-github.com repos
 			if isinstance(url_or_issue, (str, bytes)):
 				url = url_or_issue
-				subprocess.call([b"xdg-open", url])
+				subprocess.call(["xdg-open", url])
 
 if __name__ == "__main__":
 	main()
