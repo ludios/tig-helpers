@@ -3,7 +3,7 @@
 import sys
 import subprocess
 
-from util import get_site, get_github_user_and_repo, get_origin_url
+from tig_helpers import get_site, get_github_user_and_repo, get_origin_url
 
 def main():
 	commit     = sys.argv[1]
