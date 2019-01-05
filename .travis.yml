@@ -2,12 +2,13 @@ sudo: false
 
 language: python
 python:
-  - 2.7
   - 3.4
   - 3.5
   - 3.6
+  - 3.7
 
 script:
   - mkdir bin && ln -s /usr/bin/curl bin/xdg-open
-  - PATH=$PWD/bin:$PATH ./open-links-in-commit-message HEAD
   - PATH=$PWD/bin:$PATH ./open-commit HEAD
+  - PATH=$PWD/bin:$PATH ./open-links-in-commit-message HEAD
+  - PATH=$PWD/bin:$PATH ./open-issues-for-repo HEAD
